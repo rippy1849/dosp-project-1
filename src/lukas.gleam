@@ -73,10 +73,19 @@ fn handle_args(args) {
 
   // Start one logger
 
+  // let waiting_channel = process.new_subject()
+
+  // let assert Ok(waiting_started) =
+  //   actor.new(Nil)
+  //   |> actor.on_message(logger_handle)
+  //   |> actor.start
+
+  // let waiting_subject = waiting_started.data
+
   let waiting_channel = process.new_subject()
 
   let assert Ok(logger_started) =
-    actor.new(Nil)
+    actor.new(waiting_channel)
     |> actor.on_message(logger_handle)
     |> actor.start
 
@@ -160,7 +169,10 @@ fn handle_args(args) {
       tasks_per_worker,
     )
   })
-  process.sleep(10_000)
+
+  wait_for_done(waiting_channel, max_starting_point - 1)
+  // echo 5
+  // process.sleep(10_000)
   // echo hi
   // let assert Ok(worker_started) =
   //   actor.new(logger_subject)
@@ -222,44 +234,23 @@ fn nth(xs: List(String), i: Int) -> Result(String, Nil) {
   }
 }
 
-// fn handle_message(
-//   stack: List(e),
-//   msg: Message(e),
-// ) -> actor.Next(List(e), Message(e)) {
-//   case msg {
-//     Shutdown -> actor.stop()
-
-//     Push(value) -> {
-//       let new_stack = [value, ..stack]
-//       actor.continue(new_stack)
-//     }
-
-//     Pop(reply_to) -> {
-//       case stack {
-//         [] -> {
-//           process.send(reply_to, Error(Nil))
-//           actor.continue([])
-//         }
-//         [first, ..rest] -> {
-//           process.send(reply_to, Ok(first))
-//           actor.continue(rest)
-//         }
-//       }
-//     }
-
-//     BeginCalculation -> {
-//       actor.continue(stack)
-//     }
-//   }
-// }
-
-fn logger_handle(state: Nil, msg: LogMsg) -> actor.Next(Nil, LogMsg) {
+fn logger_handle(
+  state: process.Subject(String),
+  msg: LogMsg,
+) -> actor.Next(process.Subject(String), LogMsg) {
   case msg {
     Log(number, is_lukas) -> {
       // io.debug("Log: " <> text)
       // io.println(text)
-      io.println(int.to_string(number) <> " " <> bool.to_string(is_lukas))
+
+      case is_lukas {
+        True ->
+          io.println(int.to_string(number) <> " " <> bool.to_string(is_lukas))
+        False -> Nil
+      }
+      // io.println(int.to_string(number) <> " " <> bool.to_string(is_lukas))
       // echo 1
+      process.send(state, "Complete")
       actor.continue(state)
     }
   }
@@ -293,26 +284,6 @@ fn worker_handle(
         process.send(logger, Log(n, is_int))
       })
 
-      // let sequence_list =
-      //   list.range(starting_number, starting_number + length - 1)
-      // let sequence_list = list.map(sequence_list, fn(n) { n * n })
-
-      // let sum = list.fold(sequence_list, 0, fn(n, acc) { acc + n })
-
-      // let sqr_root = case int.square_root(sum) {
-      //   Ok(root) -> root
-      //   Error(_) -> 0.0
-      // }
-
-      // let is_int = is_int(sqr_root)
-      // // echo is_int
-
-      // process.send(logger, Log(starting_number, is_int))
-
-      // let worker_list = list.range(1, 5)
-
-      // echo worker_list
-
       actor.continue(logger)
     }
   }
@@ -326,22 +297,25 @@ fn is_int(x: Float) -> Bool {
 
 fn wait_for_done(channel, remaining) {
   //Wait to receive message
+  // io.println(int.to_string(remaining))
 
-  let msg = case process.receive(channel, within: 100) {
+  let msg = case process.receive(channel, within: 10_000) {
     Ok(msg) -> msg
     Error(_) -> "default"
   }
 
   // io.println(msg)
 
-  case msg == "default" {
-    True -> wait_for_done(channel, remaining)
-    False -> io.println("Msg Not Default")
-  }
+  // case msg == "default" {
+  //   True -> wait_for_done(channel, remaining)
+  //   False -> Nil
+  // }
 
   case remaining > 0 {
     True -> wait_for_done(channel, remaining - 1)
-    False -> io.println("Done")
+    False -> {
+      io.println("Done")
+    }
   }
 }
 
@@ -351,14 +325,14 @@ fn spawn_worker(boss_subject, num_calcs, start_point, length, tasks_per_worker) 
 
   let right_start_point = start_point + left_tree_calcs
 
-  io.println(
-    "Left: "
-    <> int.to_string(left_tree_calcs)
-    <> ", Right: "
-    <> int.to_string(right_tree_calcs)
-    <> ", Num Calcs: "
-    <> int.to_string(num_calcs),
-  )
+  // io.println(
+  //   "Left: "
+  //   <> int.to_string(left_tree_calcs)
+  //   <> ", Right: "
+  //   <> int.to_string(right_tree_calcs)
+  //   <> ", Num Calcs: "
+  //   <> int.to_string(num_calcs),
+  // )
 
   // echo 3
   // io.println("Num Calcs: " <> int.to_string(num_calcs))
