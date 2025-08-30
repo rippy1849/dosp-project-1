@@ -6,6 +6,7 @@ import gleam/int
 import gleam/io
 import gleam/list
 import gleam/otp/actor
+import gleam/time/timestamp
 
 // pub type Message(e) {
 //   Push(e)
@@ -82,6 +83,8 @@ fn handle_args(args) {
 
   // let waiting_subject = waiting_started.data
 
+  let now = timestamp.system_time()
+
   let waiting_channel = process.new_subject()
 
   let assert Ok(logger_started) =
@@ -97,7 +100,7 @@ fn handle_args(args) {
   // process.send(logger_subject, Log("Hello"))
   // echo 2
 
-  let tasks_per_worker = 1
+  let tasks_per_worker = 512
 
   // let upper_task_limit = max_starting_point / tasks_per_worker
 
@@ -171,6 +174,18 @@ fn handle_args(args) {
   })
 
   wait_for_done(waiting_channel, max_starting_point - 1)
+
+  let later = timestamp.system_time()
+
+  let time_later_ms = timestamp.to_unix_seconds(later)
+  let time_now_ms = timestamp.to_unix_seconds(now)
+
+  echo time_later_ms -. time_now_ms
+  // echo time_now_ms
+  // let runtime = timestamp.difference(time_later_ms, time_now_ms)
+
+  // echo { time_later_ms - time_now_ms }
+  // timestamp.difference(later,now)
   // echo 5
   // process.sleep(10_000)
   // echo hi
