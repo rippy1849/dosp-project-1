@@ -8,7 +8,7 @@ For measuring the CPU and Real Time, the program was run with the inputs:
 lukas 1000000 24
 
 The average CPU utilization was 13.4, and it took 21.2 seconds to run. Therefore the CPU time is 2.84.
-The ratio of CPU time to Real time is 7.46. 
+The ratio of CPU time to Real time is 7.46. The number of cores on the machine is 8.
 
 # Work Unit
 
