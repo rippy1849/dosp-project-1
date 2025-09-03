@@ -14,6 +14,12 @@ The ratio of CPU time to Real time is 7.46.
 
 The best work unit was determined to be 256 calculations per actor. We determined this by running the program with various work unit sizes and measuring the time taken to complete the program.
 
+# Largest Problem
+
+The largest problem that lukas managed to solve was:
+lukas 50000000 24
+
+
 # Output
 
 The output for running lukas 1000000 4
