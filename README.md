@@ -1,24 +1,21 @@
-# lukas
+# lukas runtime
 
-[![Package Version](https://img.shields.io/hexpm/v/lukas)](https://hex.pm/packages/lukas)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/lukas/)
+Google defines CPU time as follows:
 
-```sh
-gleam add lukas@1
-```
-```gleam
-import lukas
+To convert CPU time percentage to CPU time, multiply the percentage by the total elapsed time. For example, if a process uses 50% of the CPU over a total elapsed time of 10 seconds, the CPU time would be 5 seconds (0.50 x 10).
 
-pub fn main() -> Nil {
-  // TODO: An example of the project in use
-}
-```
+The average CPU utilization was 13.4, and it took 21.2 seconds to run. Therefore the CPU time is 2.84.
+The ratio of CPU time to Real time is 7.46.
 
-Further documentation can be found at <https://hexdocs.pm/lukas>.
+# Work Unit
 
-## Development
+The best work unit was determined to be 256 calculations per actor. We determined this by running the program with various work unit sizes and measuring the time taken to complete the program.
 
-```sh
-gleam run   # Run the project
-gleam test  # Run the tests
-```
+# Output
+
+The output for running lukas 1000000 4
+
+There were no values that matched the lukas constraint.
+
+
+

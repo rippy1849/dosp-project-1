@@ -59,29 +59,6 @@ fn handle_args(args) {
     Ok(max_starting_point) -> max_starting_point
     Error(_) -> 0
   }
-  // let assert Ok(actor) =
-  //   actor.new([]) |> actor.on_message(handle_message) |> actor.start
-
-  // let subject = actor.data
-
-  // process.send(subject, Push(#(1, "Joe")))
-
-  // let #(o1, o2) = case process.call(subject, 10, Pop) {
-  //   Ok(#(o1, o2)) -> #(o1, o2)
-  //   Error(_) -> #(0, "Default")
-  // }
-  // echo o1
-
-  // Start one logger
-
-  // let waiting_channel = process.new_subject()
-
-  // let assert Ok(waiting_started) =
-  //   actor.new(Nil)
-  //   |> actor.on_message(logger_handle)
-  //   |> actor.start
-
-  // let waiting_subject = waiting_started.data
 
   let now = timestamp.system_time()
 
@@ -94,74 +71,7 @@ fn handle_args(args) {
 
   let logger_subject = logger_started.data
 
-  // let test_sub = spawn_worker(logger_subject)
-  // process.send(test_sub, Work("task!"))
-
-  // process.send(logger_subject, Log("Hello"))
-  // echo 2
-
-  let tasks_per_worker = 512
-
-  // let upper_task_limit = max_starting_point / tasks_per_worker
-
-  // let upper_task_limit = case
-  //   upper_task_limit * tasks_per_worker == max_starting_point
-  // {
-  //   True -> upper_task_limit
-  //   False -> upper_task_limit + 1
-  // }
-
-  // let worker_list = list.range(1, upper_task_limit)
-
-  // let updated_list =
-  //   list.map(worker_list, fn(n) {
-  //     case n == 1 {
-  //       True -> 1
-  //       False -> n + 2 * { tasks_per_worker - 1 }
-  //     }
-  //   })
-
-  // echo updated_list
-
-  // process.spawn()
-
-  // let hi =
-  //   list.map(updated_list, fn(n) {
-  //     // let task_list = list.range(n, n + tasks_per_worker - 1)
-
-  //     // let task_list = case n + tasks_per_worker > max_starting_point {
-  //     //   True -> {
-  //     //     list.range(n, max_starting_point)
-  //     //   }
-  //     //   False -> {
-  //     //     list.range(n, n + tasks_per_worker - 1)
-  //     //   }
-  //     // }
-
-  //     // echo task_list
-  //     // let task_list = list.range(n, n + tasks_per_worker - 1)
-  //     // echo task_list
-
-  //     // case n % tasks_per_worker == 0 {
-  //     //   True -> echo []
-  //     //   False -> echo task_list
-  //     // }
-
-  //     let task_list = [1, 2]
-
-  //     let assert Ok(worker_started) =
-  //       actor.new(logger_subject)
-  //       |> actor.on_message(worker_handle)
-  //       |> actor.start
-
-  //     let work_sub = worker_started.data
-  //     process.send(work_sub, Work(task_list, length))
-  //   })
-
-  // process.send(waiting_channel, "a")
-  // process.send(waiting_channel, "a")
-
-  // wait_for_done(waiting_channel, 0)
+  let tasks_per_worker = 256
 
   process.spawn(fn() {
     spawn_worker(
@@ -181,57 +91,6 @@ fn handle_args(args) {
   let time_now_ms = timestamp.to_unix_seconds(now)
 
   echo time_later_ms -. time_now_ms
-  // echo time_now_ms
-  // let runtime = timestamp.difference(time_later_ms, time_now_ms)
-
-  // echo { time_later_ms - time_now_ms }
-  // timestamp.difference(later,now)
-  // echo 5
-  // process.sleep(10_000)
-  // echo hi
-  // let assert Ok(worker_started) =
-  //   actor.new(logger_subject)
-  //   |> actor.on_message(worker_handle)
-  //   |> actor.start
-
-  // // *** return the subject from the lambda ***
-  // let work_sub = worker_started.data
-  // process.send(work_sub, Work("task!"))
-
-  // echo hi
-
-  // list.each(hi, fn(n) { echo n })
-
-  // let workers =
-  //   worker_list
-  //   |> list.map(fn(_i) { spawn_worker(logger_subject) })
-
-  // echo workers
-
-  // Spawn N workers, all share the same logger subject
-  // let workers =
-  //   list.range(1, 5)
-  //   |> list.map(fn(n) {
-  //     let assert Ok(worker_started) =
-  //       actor.new(logger_subject)
-  //       // same subject passed into each
-  //       |> actor.on_message(worker_handle)
-  //       |> actor.start
-
-  //     worker_started.data
-  //   })
-
-  // list.each(workers, fn(w) { echo w })
-
-  // let sub_2 = case list.first(workers) {
-  //   Ok(sub_2) -> sub_2
-  //   Error(_) -> work_sub
-  // }
-  // process.send(sub_2, Work("task!"))
-
-  // Send some jobs to each worker
-  // hi
-  // |> list.each(fn(w) { process.send(w, Work("task!")) })
 }
 
 //Helper Function to grab nth value in a list
