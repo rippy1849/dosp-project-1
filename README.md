@@ -17,7 +17,7 @@ The best work unit was determined to be 256 calculations per actor. We determine
 # Largest Problem
 
 The largest problem that lukas managed to solve was:
-lukas 50000000 24
+lukas 5000000 24
 
 
 # Output
