@@ -5,7 +5,7 @@ Google defines CPU time as follows:
 To convert CPU time percentage to CPU time, multiply the percentage by the total elapsed time. For example, if a process uses 50% of the CPU over a total elapsed time of 10 seconds, the CPU time would be 5 seconds (0.50 x 10).
 
 For measuring the CPU and Real Time, the program was run with the inputs:
-lukas 1000000 24
+lukas 1000000 4
 
 The average CPU utilization was 13.4, and it took 2.04 seconds to run. Therefore the CPU time is 0.27.
 The ratio of CPU time to Real time is 7.55. The number of cores on the machine is 8.
